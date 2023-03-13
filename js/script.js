@@ -101,4 +101,18 @@ pageLinks.addEventListener('click', (e) => {
 
 });
 
+   const header = document.querySelector('.header');
+   header.insertAdjacentHTML('beforeend', `
+      <label for="search" class="student-search">
+         <span>Search by name</span>
+         <input id="search" placeholder="Search by name...">
+         <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+      </label>
+   `)
+
+   document.getElementById('search').addEventListener('change', (e) => {
+
+      console.log('Active')
+   })
+
 showPage(data, currentPage);
