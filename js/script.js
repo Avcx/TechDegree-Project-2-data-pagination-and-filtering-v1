@@ -13,6 +13,7 @@ For assistance:
 
 let currentPage = 1;
 const pageLinks = document.querySelector('.link-list');
+const ul = document.querySelector('.student-list');
 
 /*
 Create the `showPage` function
@@ -22,7 +23,6 @@ This function will create and insert/append the elements needed to display a "pa
 function showPage(list, page) {
    const startIndex = (page * 9) - 9;
    const endIndex = page * 9;
-   const ul = document.querySelector('.student-list');
    ul.innerHTML = ''
 
    function createStudent(studentData) {
@@ -57,7 +57,7 @@ function showPage(list, page) {
       }
    }
 
-   addPagination(data);
+   addPagination(list);
 
 }
 
@@ -109,10 +109,20 @@ pageLinks.addEventListener('click', (e) => {
          <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
       </label>
    `)
+const searchBox = document.querySelector('label');
+const searchField = document.querySelector('#search')
 
-   document.getElementById('search').addEventListener('change', (e) => {
-
-      console.log('Active')
+const search = (e) => {
+   const searchResults = data.filter( student => {
+      return student.name.first.toLowerCase().startsWith(searchField.value.toLowerCase()) || student.name.last.toLowerCase().startsWith(searchField.value.toLowerCase());
    })
+   if (searchResults.length < 1) {
+      return ul.innerHTML = `<h1>404 No Results Found for "${searchField.value}"</h1>`
+   }
+   showPage(searchResults, 1);
+}
 
+   searchBox.lastElementChild.addEventListener('click', search)
+
+   searchField.addEventListener('input', search)
 showPage(data, currentPage);
