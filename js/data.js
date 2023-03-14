@@ -719,4 +719,5 @@ const data = [
       thumbnail: "https://randomuser.me/api/portraits/thumb/men/48.jpg",
     },
   },
+  
 ];

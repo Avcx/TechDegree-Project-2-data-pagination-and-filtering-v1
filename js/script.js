@@ -12,6 +12,7 @@ For assistance:
 */
 
 let currentPage = 1;
+let currentList = data;
 const pageLinks = document.querySelector('.link-list');
 const ul = document.querySelector('.student-list');
 
@@ -21,10 +22,21 @@ This function will create and insert/append the elements needed to display a "pa
 */
 
 function showPage(list, page) {
-   const startIndex = (page * 9) - 9;
+
+/*
+   Start off calculating the beginning and ending index from the "data" array to display on the selected page.
+*/
+   const startIndex = (page * 9) - 9; 
    const endIndex = page * 9;
+
+// Clears all listItems off of the page.
    ul.innerHTML = ''
 
+
+/*
+   'createStudent' function takes the object passed into the "studentData" parameter and structures it into an "li"
+    element with specific information showing.
+*/
    function createStudent(studentData) {
       const listItem = document.createElement('li');
       listItem.classList.add('student-item', 'cf');
@@ -47,14 +59,21 @@ function showPage(list, page) {
          <span class="date">${studentData.registered.date}</span>
       `);
 
-      ul.appendChild(listItem);
+
+      ul.appendChild(listItem); // Prints the student's info card to the page.
 
    }
 
-   for (const student of list) {
-      if (list.indexOf(student) >= startIndex && list.indexOf(student) < endIndex) {
-         createStudent(student);
-      }
+   // Runs this code block for each "student" object of the "list" array
+   for (let student = startIndex; student < endIndex; student++) {
+
+      // If the index number of the student is within the starting and ending index numbers for the page page being printed
+      // Their information will be ran through the `createStudent` function to be added to the page. 
+         if (list[student]) {
+            createStudent(list[student]);
+         } else {
+            break;
+         }
    }
 
    addPagination(list);
@@ -68,6 +87,9 @@ This function will create and insert/append the elements needed for the paginati
 
 function addPagination(list) {
 
+   if (currentList.length < 1) {
+      return false;
+   }
   const numOfPages = Math.ceil(list.length / 9);
   pageLinks.innerHTML = '';
 
@@ -93,14 +115,15 @@ function addPagination(list) {
 
 pageLinks.addEventListener('click', (e) => {
 
-   if (e.target.tagName === 'BUTTON') {
+   if (e.target.tagName === 'BUTTON' && e.target.className !== 'active') {
       const page = e.target.textContent;
       currentPage = page;
-      showPage(data, page);
+      showPage(currentList, page);
    }
 
 });
 
+// Adds a search bar to the header of the page...
    const header = document.querySelector('.header');
    header.insertAdjacentHTML('beforeend', `
       <label for="search" class="student-search">
@@ -109,20 +132,34 @@ pageLinks.addEventListener('click', (e) => {
          <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
       </label>
    `)
-const searchBox = document.querySelector('label');
-const searchField = document.querySelector('#search')
 
-const search = (e) => {
+// Stores the button and the text field into variables
+const searchButton = document.querySelector('label > button');
+const searchField = document.querySelector('#search');
+
+/*
+   `search` Function takes the "data" array and uses the `filter` method to filter
+*/
+const search = (_e) => {
+
+   const userSearch = searchField.value;
+
    const searchResults = data.filter( student => {
-      return student.name.first.toLowerCase().startsWith(searchField.value.toLowerCase()) || student.name.last.toLowerCase().startsWith(searchField.value.toLowerCase());
+      const firstName = student.name.first;
+      const lastName = student.name.last;
+
+      return firstName.toLowerCase().startsWith(userSearch.toLowerCase()) || lastName.toLowerCase().startsWith(userSearch.toLowerCase());
    })
    if (searchResults.length < 1) {
-      return ul.innerHTML = `<h1>404 No Results Found for "${searchField.value}"</h1>`
+      return ul.innerHTML = `<h1>404 No Results Found for "${userSearch}"</h1>`
    }
-   showPage(searchResults, 1);
+   currentList = searchResults;
+   currentPage = 1;
+
+   showPage(searchResults, currentPage);
 }
 
-   searchBox.lastElementChild.addEventListener('click', search)
+   searchButton.addEventListener('click', search)
 
    searchField.addEventListener('input', search)
-showPage(data, currentPage);
+showPage(currentList, currentPage);
