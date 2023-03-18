@@ -59,22 +59,20 @@ function showPage(list, page) {
       div.classList.add(divClass);
 
       const divInfo = {
-            studentDetails: () => {
-               return `
+            studentDetails: `
                <img class="avatar" src="${studentData['picture']['large']}" alt="Profile Picture of ${studentData['name']['first']}">
                <h3>${studentData['name']['first']} ${studentData['name']['last']}</h3>
                <span class="email">${studentData['email']}</span>
-            `},
-            joinedDetails: () => {
-               return `
+            `,
+            joinedDetails: `
                <span class="date">${studentData['registered']['date']}</span>
-            `}
+            `
             };
       if (divClass === "student-details") {
-         div.insertAdjacentHTML("afterbegin", divInfo.studentDetails());
+         div.insertAdjacentHTML("afterbegin", divInfo.studentDetails);
 
       } else if (divClass === "joined-details") {
-         div.insertAdjacentHTML("afterbegin", divInfo.joinedDetails());
+         div.insertAdjacentHTML("afterbegin", divInfo.joinedDetails);
       }
       return div;
    }
