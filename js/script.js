@@ -167,11 +167,11 @@ const search = (_e) => {
       const firstName = student.name.first;
       const lastName = student.name.last;
 
-      return firstName.toLowerCase().startsWith(userSearch.toLowerCase()) || lastName.toLowerCase().startsWith(userSearch.toLowerCase());
+      return firstName.toLowerCase().includes(userSearch.toLowerCase()) || lastName.toLowerCase().includes(userSearch.toLowerCase());
    })
 // If no results are found a messages is printed to the page.
    if (searchResults.length < 1) {
-      return ul.innerHTML = `<h1>404 No Results Found for "${userSearch}"</h1>`
+      return ul.innerHTML = `<h1><strong>404:</strong> No Results Found for "${userSearch}"</h1>`
    }
 
 // Updates the global 'current' variables to retain page functionalty after a search is initiated.
