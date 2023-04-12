@@ -68,6 +68,7 @@ function showPage(list, page) {
                <span class="date">${studentData['registered']['date']}</span>
             `
             };
+            x
       if (divClass === "student-details") {
          div.insertAdjacentHTML("afterbegin", divInfo.studentDetails);
 
@@ -182,7 +183,7 @@ const search = (_e) => {
    showPage(searchResults, 1);
 }
 
-// Event listeners for when a search action is intiated.
+// Event listeners for when a search action is initiated.
    searchButton.addEventListener('click', search)
 
    searchField.addEventListener('input', search)
